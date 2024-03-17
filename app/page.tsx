@@ -1,117 +1,141 @@
-'use client'
+import { CustomCheckbox } from '@/components'
+import CustomOption from '@/components/customOption'
+import { CheckboxIcon, InfoIcon } from '@/components/icons'
 
-import { CrossIcon, InfoIcon, KeyboardArrowDownIcon } from '@/components/icons'
-import { useState } from 'react'
 
+const optionItems = [
+	{
+		label: 'age',
+		option: {
+			start: ['18', '48'],
+			end: ['20', '50'],
+		}
+	},
+	{
+		label: 'height',
+		option: {
+			start: ['5.4 cm'],
+			end: ['8.4 cm'],
+		}
+	},
+]
 
-const marriedListOptions = [
-	'Married',
-	'Never Married',
+const dropDownItems = [
+	{
+		label: 'maritual status',
+		options: [ 'married', 'never married' ],
+	},
+	{
+		label: 'religion',
+		options: [ 'hindu', 'muslim', 'christian' ],
+	},
+	{
+		label: 'mother tongue',
+		options: [ 'bengali', 'english', 'urdo', 'spanish' ],
+	},
+	{
+		label: 'community',
+		options: ["dosen't matter", 'unknown'],
+	},
+	{
+		label: 'country living in',
+		options: ['india', 'USA', 'UK', 'UAE', 'canada', 'soudi arabia', 'bangladesh'],
+	},
+	{
+		label: 'state living in',
+		options: ["dosen't matter", 'unknown'],
+	},
 ]
 
 
+
 const HomePage = () => {
-	const [ selectedItems, setSelectedItems ] = useState<typeof marriedListOptions>([
-		marriedListOptions[0]
-	])
-	const [checked, setChecked ] = useState(false)
-
-	const isItemAlreadyExists = (item: string) => {
-		return selectedItems.find( currentItem => currentItem === item)
-	}
-
-	const toggleSelect = () => {
-		setChecked( prevChecked => !prevChecked)
-	}
-
-	const optionClickHandler = (name: string) => () => {
-		setChecked(false)
-
-		if( !isItemAlreadyExists(name) ) selectedItems.push(name)
-
-		console.log({ name })
-	}
-
-	const closeItemHandler = (item: string) => () => {
-		const filteredSelectedItems = selectedItems.filter( currentItem => currentItem !== item )
-		setSelectedItems( filteredSelectedItems )
-	}
 
 	return (
 	 <div className='container mx-auto h-screen grid grid-flow-col gap-3 bg-slate-300/30 text-slate-600 border border-slate-200'>
 
-		<div data-name='left-panel' className='mt-4 bg-slate-50 col-span-3 px-4 pt-16 flex gap-8 '>
+		<aside data-name='left-panel' className='mt-4 bg-slate-50 col-span-3 px-4 pt-16 flex flex-col gap-8 '>
+			<table className='w-full border border-slate-50 '>
+				<tbody>
+					{optionItems.map(({label, option}) => (
+						<tr key={label} className='h-16 flex items-center border-0 border-red-500'>
+							<td className='capitalize w-40 border-0 border-slate-300'>{label}</td>
+							<td className='flex items-center gap-2 '>
+								<select className='text-sm border border-slate-300 rounded bg-slate-50 p-1'>
+									{option.start.map( item => (
+										<option key={item} className=''>{item}</option>
+									))}
+								</select>
+								<span className='text-sm'>to</span>
+								<select className='text-sm border border-slate-300 rounded bg-slate-50 p-1'>
+									{option.end.map( item => (
+										<option key={item} className=''>{item}</option>
+									))}
+								</select>
+							</td>
+						</tr>
+					))}
 
-			<div data-name='name-container' className='mt-1 flex flex-col gap-6 whitespace-nowrap'>
-				<p className='capitalize'>age</p>
-				<p className='capitalize'>Height</p>
-				<p className='capitalize'>Maritual Status</p>
-			</div>
+				</tbody>
+			</table>
 
-			<div data-name='value-container' className='flex flex-col gap-6 whitespace-nowrap'>
-				<div data-name='details' className='flex items-center gap-2 '>
-					<select className='text-sm border border-slate-300 rounded bg-slate-50 p-1'>
-						<option className=''>18</option>
-					</select>
-					<span className='text-sm'>to</span>
-					<select className='text-sm border border-slate-300 rounded bg-slate-50 p-1'>
-						<option>50</option>
-					</select>
-				</div>
-				<div data-name='details' className='flex items-center gap-2 '>
-					<select className='text-sm border border-slate-300 rounded bg-slate-50 p-1'>
-						<option>18.04 cm</option>
-					</select>
-					<span className='text-sm'>to</span>
-					<select className='text-sm border border-slate-300 rounded bg-slate-50 p-1'>
-						<option>28.09 cm</option>
-					</select>
-				</div>
+			<table className='w-full border border-slate-50 -mt-6'>
+				<tbody>
+					{dropDownItems.map( ({ label, options }) => (
+						<tr key={label} className='h-12 flex items-center'>
+							<td className='capitalize w-40 border-0 border-slate-300'>{label}</td>
+							<td className='flex-1'>
+								<CustomOption optionList={options} /> 
+							</td>
+						</tr>
+					))}
+					<tr className='h-12 flex items-center'>
+						<td className='capitalize w-40 border-0 border-slate-300'>Photo Settings</td>
+						<td className='flex-1 flex items-center gap-4 whitespace-nowrap'>
 
-				<div className='relative'>
-					<div data-name='details' className='flex border border-slate-300 rounded '>
+							<div className='flex gap-2 items-center'>
+								<CustomCheckbox id='visible-to-all' />
+								<label htmlFor="visible-to-all">Visible to all</label>
+							</div>
 
-						<div className='flex-1 flex flex-wrap gap-4 items-center px-2 py-1.5 '>
+							<div className='flex gap-2 items-center'>
+								<CustomCheckbox id='protected-photo' />
+								<label htmlFor="protected-photo">Protected Photo</label>
+							</div>
 
-							{!selectedItems.length && (
-								<div className='flex items-center gap-1 '>
-									<span className='capitalize'>select one</span>
-								</div>
-							)}
+						</td>
+					</tr>
 
-							{selectedItems.map( ((item, index) => (
-								<div key={index} className='flex items-center gap-1 '>
-									<span className='capitalize'>{item}</span>
-									<button onClick={closeItemHandler(item)}> <CrossIcon /> </button>
-								</div>
-							)))}
+					<tr className='h-12 flex items-center'>
+						<td className='capitalize w-40 border-0 border-slate-300'>Do not Show</td>
+						<td className='flex-1 flex items-center gap-4 whitespace-nowrap'>
 
-						</div>
+							<div className='flex gap-2 items-center'>
+								<CustomCheckbox id='profile-filtered' />
+								<label htmlFor='profile-filtered'>Profiles that have filtered me out</label>
+							</div>
 
-						<button onClick={toggleSelect} id='dropdown-button' className='bg-slate-200 px-3 '> <KeyboardArrowDownIcon /> </button>
-					</div>
+							<div className='flex gap-2 items-center'>
+								<CustomCheckbox id='profile-viewed' />
+								<label htmlFor='profile-viewed'>Profiles that I have already viewed</label>
+							</div>
 
-					{checked && (
-						<ul className='absolute w-full'>
-							{marriedListOptions.map( (item) => (
-								<li 
-									key={item} 
-									onClick={optionClickHandler(item)} 
-									className='border-slate-300 px-2 py-1.5 rounded cursor-pointer hover:bg-slate-100'
-								>{item}</li>
-							))}
-						</ul>
-					)}
+						</td>
+					</tr>
 
+					<tr className='h-12 flex items-center'>
+						<td className='capitalize w-40 border-0 border-slate-300'></td>
+						<td className='flex-1'>
+							<p className='text-primary font-semibold whitespace-nowrap underline capitalize'>Advance search options</p>
+						</td>
+					</tr>
 
-				</div>
+				</tbody>
+			</table>
+		</aside>
+	 
 
-
-			</div>
-		</div>
-
-		<div data-name='right-panel' className=' mt-4 flex flex-col gap-4'>
-
+		<aside data-name='right-panel' className=' mt-4 flex flex-col gap-4'>
 			<div className='bg-slate-50 p-1 whitespace-nowrap rounded shadow-md'>
 				<p className='px-4 py-1.5 font-medium bg-slate-200/70 rounded'>Profile ID Search</p>
 				<div className='mx-2 py-2 flex gap-4 items-center justify-center'>
@@ -132,8 +156,8 @@ const HomePage = () => {
 				</div>
 			</div>
 
-		</div>
-	 
+		</aside>
+
 	 </div>
 	)
 }
