@@ -1,9 +1,10 @@
-import { CustomCheckbox } from '@/components'
-import CustomOption from '@/components/customOption'
-import { CheckboxIcon, InfoIcon } from '@/components/icons'
+import type { OptionItems } from '@/types'
 
+import { Select, CustomCheckbox, CustomOption, SearchPanel } from '@/components'
+import { HelpIcon, InfoIcon } from '@/components/icons'
+import Link from 'next/link'
 
-const optionItems = [
+const optionItems:OptionItems[] = [
 	{
 		label: 'age',
 		option: {
@@ -14,8 +15,8 @@ const optionItems = [
 	{
 		label: 'height',
 		option: {
-			start: ['5.4 cm'],
-			end: ['8.4 cm'],
+			start: ['5.4 cm','6.0 cm'],
+			end: ['8.4 cm', '9.0 cm' ],
 		}
 	},
 ]
@@ -52,26 +53,18 @@ const dropDownItems = [
 const HomePage = () => {
 
 	return (
-	 <div className='container mx-auto h-screen grid grid-flow-col gap-3 bg-slate-300/30 text-slate-600 border border-slate-200'>
+	 <div className='container mx-auto h-full grid grid-flow-col gap-3 bg-slate-300/30 text-slate-600 border border-slate-200'>
 
-		<aside data-name='left-panel' className='mt-4 bg-slate-50 col-span-3 px-4 pt-16 flex flex-col gap-8 '>
+		<aside data-name='left-panel' className='mt-2 bg-slate-50 col-span-3 px-4 pt-8 flex flex-col gap-8 '>
 			<table className='w-full border border-slate-50 '>
 				<tbody>
 					{optionItems.map(({label, option}) => (
 						<tr key={label} className='h-16 flex items-center border-0 border-red-500'>
 							<td className='capitalize w-40 border-0 border-slate-300'>{label}</td>
 							<td className='flex items-center gap-2 '>
-								<select className='text-sm border border-slate-300 rounded bg-slate-50 p-1'>
-									{option.start.map( item => (
-										<option key={item} className=''>{item}</option>
-									))}
-								</select>
+								<Select option={option.start} />
 								<span className='text-sm'>to</span>
-								<select className='text-sm border border-slate-300 rounded bg-slate-50 p-1'>
-									{option.end.map( item => (
-										<option key={item} className=''>{item}</option>
-									))}
-								</select>
+								<Select option={option.end} />
 							</td>
 						</tr>
 					))}
@@ -94,13 +87,16 @@ const HomePage = () => {
 						<td className='flex-1 flex items-center gap-4 whitespace-nowrap'>
 
 							<div className='flex gap-2 items-center'>
-								<CustomCheckbox id='visible-to-all' />
+								<CustomCheckbox id='visible-to-all' name='visible-to-all' />
 								<label htmlFor="visible-to-all">Visible to all</label>
 							</div>
 
 							<div className='flex gap-2 items-center'>
-								<CustomCheckbox id='protected-photo' />
+								<CustomCheckbox id='protected-photo' name='protected-photo' />
 								<label htmlFor="protected-photo">Protected Photo</label>
+								<button>
+									<HelpIcon />
+								</button>
 							</div>
 
 						</td>
@@ -111,12 +107,15 @@ const HomePage = () => {
 						<td className='flex-1 flex items-center gap-4 whitespace-nowrap'>
 
 							<div className='flex gap-2 items-center'>
-								<CustomCheckbox id='profile-filtered' />
+								<CustomCheckbox id='profile-filtered' name='profile-filtered' />
 								<label htmlFor='profile-filtered'>Profiles that have filtered me out</label>
+								<button>
+									<HelpIcon />
+								</button>
 							</div>
 
 							<div className='flex gap-2 items-center'>
-								<CustomCheckbox id='profile-viewed' />
+								<CustomCheckbox id='profile-viewed'  name='profile-viewed' />
 								<label htmlFor='profile-viewed'>Profiles that I have already viewed</label>
 							</div>
 
@@ -126,7 +125,10 @@ const HomePage = () => {
 					<tr className='h-12 flex items-center'>
 						<td className='capitalize w-40 border-0 border-slate-300'></td>
 						<td className='flex-1'>
-							<p className='text-primary font-semibold whitespace-nowrap underline capitalize'>Advance search options</p>
+							<Link 
+								href='#' 
+								className='text-primary font-semibold whitespace-nowrap underline capitalize'
+							>Advance search options</Link>
 						</td>
 					</tr>
 
@@ -135,16 +137,11 @@ const HomePage = () => {
 		</aside>
 	 
 
-		<aside data-name='right-panel' className=' mt-4 flex flex-col gap-4'>
+		<aside data-name='right-panel' className=' mt-2 flex flex-col gap-4'>
 			<div className='bg-slate-50 p-1 whitespace-nowrap rounded shadow-md'>
 				<p className='px-4 py-1.5 font-medium bg-slate-200/70 rounded'>Profile ID Search</p>
 				<div className='mx-2 py-2 flex gap-4 items-center justify-center'>
-					<input placeholder='Enter Profile ID' className='
-						w-40 border border-slate-300/90 rounded
-						placeholder:text-sm placeholder:text-slate-400
-						px-2 py-0.5 font-semibold 
-					' />
-					<button className='bg-primary text-slate-50 px-4 py-1 rounded shadow'>Go</button>
+					<SearchPanel />
 				</div>
 			</div>
 

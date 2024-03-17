@@ -7,7 +7,7 @@ type Props = {
 	optionList: string[]
 }
 
-const CustomOption = ({ optionList }: Props) => {
+export const CustomOption = ({ optionList }: Props) => {
 	const [ selectedItems, setSelectedItems ] = useState<typeof optionList>([
 		optionList[0]
 	])
@@ -78,4 +78,3 @@ const CustomOption = ({ optionList }: Props) => {
 	)
 
 }
-export default CustomOption
